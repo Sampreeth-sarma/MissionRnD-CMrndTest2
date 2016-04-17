@@ -125,5 +125,6 @@ void equal(char *res, char *res1)
 	while (res[i] != NULL)
 	{
 		res[i] = res1[i];
+		i++;
 	}
 }
