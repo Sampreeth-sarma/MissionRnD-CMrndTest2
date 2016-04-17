@@ -49,10 +49,12 @@ First Island in DTD ie 'D' occurs alphabatically before 'H' and 'Z')
 #include <stdio.h>
 #include<malloc.h>
 int count(char *, char*,int, int);
+void equal(char *, char *);
 char * find_common_route(char * hacklist, char *codelist, int *cost){
 	if (hacklist==NULL || codelist==NULL)
 	return NULL;
-	int i = 0, j, number = 0, ansi; char *res; *cost = 0;
+	int i = 0, j, number = 0, ansi,ansi1,cost2; char *res,*res1; *cost = 0; res = (char *)calloc(20, sizeof(char)); int k;
+	res1 = (char *)calloc(20, sizeof(char));
 	while (hacklist[i] != NULL)
 	{
 		j = 0;
@@ -65,21 +67,48 @@ char * find_common_route(char * hacklist, char *codelist, int *cost){
 				{
 					number = val;
 					ansi = i;
+					*cost = 0;
+					for (k = ansi; k < ansi + number; k++)
+					{
+						int cost1 = ((int)hacklist[k] - 64);
+						*cost = *cost + cost1;
+						res[k - ansi] = hacklist[k];
+
+					}
+					res[k - ansi] = NULL;
+				}
+				else if (val == number)
+				{
+					number = val;
+					ansi1 = i; cost2 = 0;
+					for (k = ansi1; k < ansi1 + number; k++)
+					{
+						int cost1 = ((int)hacklist[k] - 64);
+						cost2 = cost2 + cost1;
+						res1[k - ansi1] = hacklist[k];
+
+					}
+					res1[k - ansi] = NULL;
+					if (cost2 < *cost)
+					{
+						res = res1;
+						*cost = cost2;
+					}
+					else if (cost2 == *cost)
+					{
+						if ((int)res[0]>(int)res1[0])
+						{
+							equal(res, res1);
+						}
+					}
 				}
 			}
 			j++;
 		}
 		i++;
 	}
-	res = (char *)calloc(number, sizeof(char)); int k;
-	for ( k = ansi; k < ansi + number; k++)
-	{
-		int cost1 = ((int)hacklist[k] - 64);
-		*cost = *cost + cost1;
-		res[k - ansi] = hacklist[k];
-
-	}
-	res[k - ansi] = NULL;
+	
+	int cost4 = *cost;
 	return res;
 }
 int count(char * hacklist, char *codelist,int i, int j)
@@ -90,4 +119,11 @@ int count(char * hacklist, char *codelist,int i, int j)
 	return count1;
 
 }
-
+void equal(char *res, char *res1)
+{
+	int i = 0;
+	while (res[i] != NULL)
+	{
+		res[i] = res1[i];
+	}
+}
